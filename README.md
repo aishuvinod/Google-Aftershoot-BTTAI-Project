@@ -1,1 +1,0 @@
-# Google-Aftershoot-BTTAI-Project
