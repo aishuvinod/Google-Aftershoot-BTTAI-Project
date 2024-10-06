@@ -8,47 +8,50 @@ import os
 import pandas as pd
 from sklearn import metrics
 from sklearn.metrics import accuracy_score
-#https://www.freecodecamp.org/news/svm-machine-learning-tutorial-what-is-the-support-vector-machine-algorithm-explained-with-code-examples/
 
+#access file
 filename = "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/Eurodataset_preprocessing.csv"
+
+#convert csv to a dataframe
 df = pd.read_csv(filename)
-ds = np.array(df)
 
 
 def train_test(X_train, X_test, y_train, y_test): 
+   '''
+   fit and predict an SVM model and returns the accuracy score
+   '''
    model = svm.SVC(kernel='linear', C=1.0)
 
-   model.fit(X_train, y_train)
+   model.fit(X_train, y_train) #fit model
 
+    #predict 
    class_label_prediction = model.predict(X_test)
 
+   #determine accuracy score
    acc_score = accuracy_score(y_test, class_label_prediction)
 
    return acc_score
 
 
 def main(): 
+    #accessing folders
     data = "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/EuroSAT dataset"
     folders = os.listdir(data)
     folders.remove(".DS_Store")
 
-    # image_count = 0; 
-    # y = df['label'][df['label'] == image_count]
-    # X = df[df["label"] == image_count].drop(columns = "label")
+    y = df['label'] #label
+    X = df.drop(columns = "label") #features
 
-    y = df['label']
-    X = df.drop(columns = "label")
-
+    #split each category into a 90/10 split
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 123, test_size = 0.10, stratify = y)
-    print(X_train.shape)
-    print(y_train.shape)
 
     acc = train_test(X_train, X_test, y_train, y_test)
 
+    #prints the accuracy score
     print("The accuracy score is: " , str(acc))
 
 if __name__ == "__main__": 
-    main() 
+    main()
 
 
 
