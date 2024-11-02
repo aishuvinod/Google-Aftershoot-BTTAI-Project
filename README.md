@@ -1,10 +1,23 @@
 # Object Detection in Satellite Imagery, Google and Aftershoot
 
-Table of Contents
+<ins>Table of Contents<ins>
 
-  [Introduction](#introduction)
+  _[Introduction](#introduction)_
   
-    [The Role of ML in Satellite Imagery Analysis](#the-role-of-ml-in-satellite-imagery-analysis)
+    The Role of ML in Satellite Imagery Analysis
+    
+    Business Impact
+
+  _[Dataset](#dataset)_
+
+    Dataset Overview
+    
+    Data Preparation and Pre-processing
 
 ## Introduction
 ### The Role of ML in Satellite Imagery Analysis
+### Business Impact
+
+## Dataset
+### Dataset Overview
+### Data Preparation and Pre-processing
