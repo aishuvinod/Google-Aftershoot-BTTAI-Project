@@ -1,0 +1,3 @@
+linear model accuracy: 98.217% 
+rbf accuracy = 24.847% 
+polynomial = 97.939%  
