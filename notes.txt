@@ -1,3 +1,7 @@
 linear model accuracy: 98.217% 
 rbf accuracy = 24.847% 
 polynomial = 97.939%  
+
+each person should test out a different combination of model and hyperparameters bc it takes too long to run 
+
+lab 6 from ML foundations has code on how to graph the accuracies of different models on one graph, maybe we should do this so we can present the graph and be like 'we picked the most accurate model' 
