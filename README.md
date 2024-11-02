@@ -2,17 +2,15 @@
 
 <ins>Table of Contents<ins>
 
-  _[Introduction](#introduction)_
-  
-    The Role of ML in Satellite Imagery Analysis
-    
-    Business Impact
+_[Introduction](#introduction)_
 
-  _[Dataset](#dataset)_
+- The Role of ML in Satellite Imagery Analysis
+- Business Impact
 
-    Dataset Overview
-    
-    Data Preparation and Pre-processing
+_[Dataset](#dataset)_
+
+- Dataset Overview
+- Data Preparation and Pre-processing
 
 ## Introduction
 ### The Role of ML in Satellite Imagery Analysis
