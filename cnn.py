@@ -13,12 +13,12 @@ csv = "image_data.csv"
 df = pd.read_csv(csv) 
 
 pixel_data = df.drop(columns=['image_name']) 
-pixel_values = pixel_data.values  # converts to numpy array
+pixel_values = pixel_data.to_numpy  # converts to numpy array
 
 #reshape pixel values into a 3D format 
 image_dim = 64
 num_channels = 3
-X = pixel_values.reshape((-1, image_dim, image_dim, num_channels))
+X = pixel_values
 
 #getting labels 
 df['label'] = df['image_name'].str.split('_').str[0] #label is like the image_name prefix 
