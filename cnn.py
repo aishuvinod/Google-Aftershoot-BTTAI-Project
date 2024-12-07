@@ -10,6 +10,8 @@ from keras.models import Model
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 import time 
+from sklearn import metrics
+from sklearn.metrics import accuracy_score, confusion_matrix
 
 print("reading file")
 fileName= "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/Eurodataset.csv"
@@ -24,6 +26,8 @@ num_channels = 3
 
 #getting labels 
 y = df["label"] 
+
+print(df['label'].nunique())
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
@@ -99,3 +103,17 @@ print('Elapsed time: %.2fs' % (t1-t0))
 # Evaluating the model 
 loss, accuracy = cnn_model.evaluate(X_test, y_test)
 print('Loss: ', str(loss) , 'Accuracy: ', str(accuracy))
+
+from sklearn.metrics import classification_report
+
+# Get logits (raw model outputs)
+logits = cnn_model.predict(X_test)
+
+# Convert logits to class predictions
+predictions = logits.argmax(axis=1)
+
+# Generate and print classification report
+print("Classification Report:")
+print(classification_report(y_test, predictions, target_names=[str(x) for x in range(0, 10)]))
+
+# start with 8 epochs
