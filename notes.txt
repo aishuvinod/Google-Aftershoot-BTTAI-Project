@@ -9,3 +9,5 @@ lab 6 from ML foundations has code on how to graph the accuracies of different m
 me (mantra) ill do a grid search on the best c value for RBF kernel on the SVC model 
 
 (mina) I did Randomized Search on random sample (2,700, 10% of full dataset) for poly kernel and got best parameters: {'gamma': 0.001, 'degree': 4, 'coef0': 0.1, 'C': 100}
+
+for linear kernel, 80/20 split: The accuracy score is:  0.9874074074074074
