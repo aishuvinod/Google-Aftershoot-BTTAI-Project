@@ -17,18 +17,20 @@ print("reading file")
 fileName= "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/Eurodataset.csv"
 df = pd.read_csv(fileName) 
 
+# get X 
 X = df.drop(columns= "label") 
-
 
 #reshape pixel values into a 3D format 
 image_dim = 64
-num_channels = 3
+num_channels = 3 # RBG
 
 #getting labels 
 y = df["label"] 
 
+# ensuring all labels are included/represented in the labels column 
 print(df['label'].nunique())
 
+# Split by class. 80/20 per class 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
 #normalizing the pixel values in X to be between 0 and 1 by dividing by 255 
@@ -73,10 +75,15 @@ cnn_model.add(keras.layers.Conv2D(128, (3, 3), padding="same"))
 cnn_model.add(keras.layers.BatchNormalization())
 cnn_model.add(keras.layers.ReLU())
 
-# 6. Global average pooling
+# 6. Fifth convolutional block
+cnn_model.add(keras.layers.Conv2D(256, (3, 3), padding="same"))
+cnn_model.add(keras.layers.BatchNormalization())
+cnn_model.add(keras.layers.ReLU())
+
+# 7. Global average pooling
 cnn_model.add(keras.layers.GlobalAveragePooling2D())
 
-#7. Output Layer
+#8. Output Layer
 cnn_model.add(keras.layers.Dense(10, activation="softmax")) 
 
 # Print the model summary
@@ -94,7 +101,7 @@ loss_fn = keras.losses.SparseCategoricalCrossentropy(from_logits = True)
 cnn_model.compile(optimizer = sgd_optimizer, loss = loss_fn, metrics = ['accuracy'])
 
 # Fit the model 
-num_epochs = 1 # Number of epochs
+num_epochs = 5 # Number of epochs
 t0 = time.time() # start time
 cnn_model.fit(X_train, y_train, epochs = num_epochs, validation_split = 0.1) # fit model
 t1 = time.time() # stop time
@@ -116,4 +123,13 @@ predictions = logits.argmax(axis=1)
 print("Classification Report:")
 print(classification_report(y_test, predictions, target_names=[str(x) for x in range(0, 10)]))
 
-# start with 8 epochs
+# Generate confusion matrix 
+cm = confusion_matrix(y_test, predictions)
+print(cm) 
+plt.figure(figsize=(9, 9))
+sns.heatmap(cm, annot = True, fmt = '0.3f', linewidth = 0.5, square = True, cbar = False)
+plt.ylabel('Actual Values')
+plt.xlabel('Predicted values')
+plt.show()
+
+cnn_model.save('cnnmodel')
