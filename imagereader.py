@@ -4,11 +4,15 @@ import pandas as pd
 import glob
 import cv2
 
-labels = []
-images = []
+labels = [] #list of labels 0 - 9 for the images (10 categories, 0 -9) 
+images = [] #image pixels list
 
 
-def read_image(data_dir, folder) :
+
+def read_image(data_dir, folder, label) :
+  '''
+  Takes in data_dir, individual folder, and a count (for the label) and flattens each image data and stores it into image list. 
+  '''
   # retrieving folder path by joining the data directory and folder
   folder_path = os.path.join(data_dir, folder)
 
@@ -27,37 +31,48 @@ def read_image(data_dir, folder) :
     #resized_img_flatten = resized_image.reshape(-1)
     #print(resized_img_flatten.shape)
     
-    labels.append(folder)
+    #append the index of the label into the labels list
+    labels.append(label)
+    flatten_img = resized_image.flatten()
+      #print(flatten_img.shape); 
 
-    if read_img is not None:
-      flatten_img = resized_image.flatten()
-      print(flatten_img.shape); 
-      #print(flatten_img.shape)
-      images.append(flatten_img)
-    else:
-      print('None')
+    #append the flattened image to the images list
+    images.append(flatten_img)
 
 
 def main(): 
-    data = "/Users/isabellewang/Downloads/BTTAI Google:Aftershoot Isabelle/Google-Aftershoot-BTTAI-Project/EuroSAT dataset"
+    print("Reading data")
+
+    label_index = 0; #counter variable for the category 
+    data = "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/EuroSATdataset"
     folders = os.listdir(data)
+    folders.remove(".DS_Store")
+
     #folder_paths = [os.path.join(data, folder) for folder in folders]
+
+    #looping into each folder/category to read the image 
     for folder in folders:
-       if folder != ".DS_Store": 
-          read_image(data, folder)
+        print(folder)
+        read_image(data, folder, label_index)
+        label_index+=1
+
+    # makes the dataframe for the images with pixels as column names
+    df = pd.DataFrame(data = images, columns = [i for i in range(0, images[0].shape[0])])
+
+    #append the label to dataframe
+    df['label'] = labels
+
+    print(df['label'].unique())
+
+    #convert the dataframe to a csv file
+    df.to_csv("Eurodataset.csv", index = "image_name"); 
+
+    print("Data stored in a csv complete!")
 
     
 if __name__ == '__main__': 
-    print("Reading data")
     main()
     
-    df = pd.DataFrame(data = images, columns = [i for i in range(0, images[0].shape[0])])
-    df['label'] = labels
-
-    #data = df.iloc[:50]
-    df.to_csv("Eurodataset_preprocessing.csv", index = "image_name"); 
-
-    print("Data stored in a csv complete!")
 
     
 
