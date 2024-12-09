@@ -1,0 +1,23 @@
+# Installation Instructions
+
+## Prerequisites
+- Python 3.8 or higher
+- Git
+
+## Step 1: Clone the Repository
+1. Open your terminal or command prompt.
+2. Run the following commands:
+git clone https://github.com/aishuvinod/Google-Aftershoot-BTTAI-Project.git
+
+3. Install all dependencies by running:
+pip install -r requirements.txt
+
+## Step 4: Prepare the Dataset
+1. Download the EuroSAT dataset from (https://github.com/phelber/eurosat).
+2. Place the dataset in a folder named `dataset` inside the project directory.
+
+## Step 5: Train the Model
+## Step 6: Evaluate the Model
+## Step 7: Deploy the Model (Optional)
+
+
