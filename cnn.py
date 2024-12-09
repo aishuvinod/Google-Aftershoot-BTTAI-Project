@@ -12,6 +12,7 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 import time 
 from sklearn import metrics
 from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import roc_auc_score, roc_curve
 
 print("reading file")
 fileName= "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/Eurodataset.csv"
@@ -75,11 +76,6 @@ cnn_model.add(keras.layers.Conv2D(128, (3, 3), padding="same"))
 cnn_model.add(keras.layers.BatchNormalization())
 cnn_model.add(keras.layers.ReLU())
 
-# 6. Fifth convolutional block
-cnn_model.add(keras.layers.Conv2D(256, (3, 3), padding="same"))
-cnn_model.add(keras.layers.BatchNormalization())
-cnn_model.add(keras.layers.ReLU())
-
 # 7. Global average pooling
 cnn_model.add(keras.layers.GlobalAveragePooling2D())
 
@@ -101,7 +97,7 @@ loss_fn = keras.losses.SparseCategoricalCrossentropy(from_logits = True)
 cnn_model.compile(optimizer = sgd_optimizer, loss = loss_fn, metrics = ['accuracy'])
 
 # Fit the model 
-num_epochs = 5 # Number of epochs
+num_epochs = 6 # Number of epochs
 t0 = time.time() # start time
 cnn_model.fit(X_train, y_train, epochs = num_epochs, validation_split = 0.1) # fit model
 t1 = time.time() # stop time
@@ -132,4 +128,41 @@ plt.ylabel('Actual Values')
 plt.xlabel('Predicted values')
 plt.show()
 
-cnn_model.save('cnnmodel')
+
+from sklearn.preprocessing import label_binarize
+from sklearn.metrics import roc_auc_score, roc_curve
+
+# Binarize the true labels for AUC-ROC computation
+class_labels = sorted(y.unique())  # Assuming y contains the original labels
+y_test_binarized = label_binarize(y_test, classes=class_labels)
+
+# Get probabilities from the model for each class
+y_pred_prob = cnn_model.predict(X_test)
+
+# Compute AUC for each class
+auc_scores = []
+plt.figure(figsize=(10, 6))
+for i, class_label in enumerate(class_labels):
+    fpr, tpr, _ = roc_curve(y_test_binarized[:, i], y_pred_prob[:, i])
+    auc_score = roc_auc_score(y_test_binarized[:, i], y_pred_prob[:, i])
+    auc_scores.append(auc_score)
+    plt.plot(fpr, tpr, label=f"Class {class_label} (AUC = {auc_score:.2f})")
+
+# Plot Random Chance Line
+plt.plot([0, 1], [0, 1], 'k--', label='Random Chance')
+
+# Plot settings
+plt.title("AUC-ROC Curve (Multi-class)")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.legend()
+plt.grid()
+plt.show()
+
+# Compute overall AUC
+overall_auc = roc_auc_score(y_test_binarized, y_pred_prob, average="weighted", multi_class="ovr")
+print(f"\nWeighted AUC-ROC Score: {overall_auc}")
+
+# save models into different formats. 
+cnn_model.save('cnnmodel1.h5')
+cnn_model.save('cnn_model1.keras')

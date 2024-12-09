@@ -33,25 +33,18 @@ def read_image(data_dir, folder, label) :
     
     #append the index of the label into the labels list
     labels.append(label)
-
-    if read_img is not None:
-      #flatten the image
-      flatten_img = resized_image.flatten()
+    flatten_img = resized_image.flatten()
       #print(flatten_img.shape); 
 
-      #append the flattened image to the images list
-      images.append(flatten_img)
-    
-    else:
-      print('None')
-
+    #append the flattened image to the images list
+    images.append(flatten_img)
 
 
 def main(): 
     print("Reading data")
 
     label_index = 0; #counter variable for the category 
-    data = "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/EuroSAT dataset"
+    data = "/Users/isabellewang/Downloads/Google-Aftershoot-BTTAI-Project/EuroSATdataset"
     folders = os.listdir(data)
     folders.remove(".DS_Store")
 
@@ -59,6 +52,7 @@ def main():
 
     #looping into each folder/category to read the image 
     for folder in folders:
+        print(folder)
         read_image(data, folder, label_index)
         label_index+=1
 
@@ -68,8 +62,10 @@ def main():
     #append the label to dataframe
     df['label'] = labels
 
+    print(df['label'].unique())
+
     #convert the dataframe to a csv file
-    df.to_csv("Eurodataset_preprocessing.csv", index = "image_name"); 
+    df.to_csv("Eurodataset.csv", index = "image_name"); 
 
     print("Data stored in a csv complete!")
 

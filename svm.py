@@ -24,13 +24,17 @@ def train_test(X_train, X_test, y_train, y_test):
    '''
    fit and predict an SVM model and returns the accuracy score
    '''
-   model = svm.SVC(kernel='linear', C=1e-06, gamma = 0.01)
-
+   print("here")
+   model = svm.SVC(kernel='linear', C=1)
+   
+   print("fit")
    model.fit(X_train, y_train) #fit model
 
-    #predict 
+   # predict 
+   print("class")
    class_label_prediction = model.predict(X_test)
 
+   print("acc")
    #determine accuracy score
    acc_score = accuracy_score(y_test, class_label_prediction)
 
@@ -51,7 +55,7 @@ def random_grid_search_best_param(X_train, y_train, X_test, y_test):
 def random_search_best_param(X_train, y_train, X_test, y_test): 
     print("in")
     model = svm.SVC(kernel = "linear")
-    param_random = {'C': [pow(10, (-x)) for x in range(5, 10)], 'gamma': [0.01]}
+    param_random = {'C': [0.001, 0.01, 0.1, 1, 10, 100], 'gamma': [0.01]}
 
     search = RandomizedSearchCV(model, param_random, cv = 5, random_state=42)
     search.fit(X_train, y_train)
@@ -104,17 +108,19 @@ def main():
     print(X.shape)
     #y = label_binarize(y, classes = [i for i in range(0, 10)])
     #print(y.shape)
-
-
-
     #split each category into a 90/10 split
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 42, test_size = 0.10, stratify = y)
-  
+    
+    X_train = X_train/255.0
+    X_test = X_test/255.0 
+
+
+    print("ahe")
     acc = train_test(X_train, X_test, y_train, y_test)
 
     #prints the accuracy score
-    print("The accuracy score is: " , str(acc))
-    #print(random_search_best_param(X_train, y_train, X_test, y_test))
+    #print("The accuracy score is: " , str(acc))
+    print(random_search_best_param(X_train, y_train, X_test, y_test))
     #print(random_grid_search_best_param(X_train, y_train, X_test, y_test))
     #compute_precision_recall(X_train, y_train, X_test, y_test)
 
